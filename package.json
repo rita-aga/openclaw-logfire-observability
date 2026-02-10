@@ -1,9 +1,31 @@
 {
-  "name": "logfire-observability",
+  "name": "openclaw-logfire-observability",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
-  "description": "Self-contained OpenClaw observability plugin — traces agent runs, tool calls, and messages to Logfire via OTLP",
+  "description": "OpenClaw plugin for full observability in Pydantic Logfire — traces agent runs, tool calls, and messages via OpenTelemetry",
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "logfire",
+    "pydantic",
+    "observability",
+    "opentelemetry",
+    "otel",
+    "tracing",
+    "agent",
+    "llm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rita-aga/openclaw-logfire-observability"
+  },
+  "license": "MIT",
+  "author": "rita-aga",
+  "files": [
+    "index.ts",
+    "openclaw.plugin.json",
+    "README.md"
+  ],
   "openclaw": {
     "extensions": [
       "./index.ts"
