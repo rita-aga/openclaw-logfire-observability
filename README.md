@@ -104,10 +104,22 @@ User message
 | Span | Fires when | Key attributes |
 |------|-----------|----------------|
 | `message.received` | Inbound user message | channel, from, content |
-| `agent.run` | LLM call start → end | agent, provider, prompt preview, response, duration, message count |
+| `agent.run` | LLM call start → end | agent, provider, prompt preview, response, duration, message count, token usage, cost, model |
 | `tool.<name>` | Each tool execution | tool name, params, result, call ID |
 
 All spans include `openclaw.sessionKey` and `openclaw.agent` for filtering.
+
+`agent.run` spans also include [OpenTelemetry GenAI semantic convention](https://opentelemetry.io/docs/specs/semconv/gen-ai/) attributes:
+
+| Attribute | Description |
+|-----------|-------------|
+| `gen_ai.usage.input_tokens` | Total input tokens |
+| `gen_ai.usage.output_tokens` | Total output tokens |
+| `gen_ai.usage.total_tokens` | Combined total |
+| `gen_ai.usage.cache_read_tokens` | Tokens served from cache |
+| `gen_ai.usage.cache_write_tokens` | Tokens written to cache |
+| `gen_ai.response.model` | Model used for the response |
+| `openclaw.llm.cost_usd` | Estimated cost in USD |
 
 ### From diagnostics-otel (built-in)
 
@@ -172,6 +184,12 @@ SELECT attributes->>'openclaw.model', sum(value) FROM metrics WHERE name = 'open
 
 -- Cost per channel (from diagnostics-otel)
 SELECT attributes->>'openclaw.channel', sum(value) FROM metrics WHERE name = 'openclaw.cost.usd' GROUP BY 1
+
+-- Token usage by model (from logfire-observability)
+SELECT attributes->>'gen_ai.response.model', sum(attributes->>'gen_ai.usage.total_tokens') FROM spans WHERE span_name = 'agent.run' GROUP BY 1
+
+-- Cost by agent (from logfire-observability)
+SELECT attributes->>'openclaw.agent', sum(attributes->>'openclaw.llm.cost_usd') FROM spans WHERE span_name = 'agent.run' GROUP BY 1
 
 -- Messages by channel (from logfire-observability)
 SELECT attributes->>'openclaw.channel', count(*) FROM spans WHERE span_name = 'message.received' GROUP BY 1

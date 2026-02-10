@@ -5,7 +5,7 @@ import { Resource } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
 const TRACER_NAME = "openclaw.logfire-observability";
-const TRACER_VERSION = "1.0.0";
+const TRACER_VERSION = "1.1.0";
 
 interface ActiveRun {
   span: Span;
@@ -220,15 +220,51 @@ export default {
         if (event.messages?.length) {
           span.setAttribute("openclaw.messages.total", event.messages.length);
 
-          if (captureContent) {
-            for (let i = event.messages.length - 1; i >= 0; i--) {
-              const msg = (event.messages as any[])[i];
-              if (msg?.role === "assistant") {
-                span.setAttribute("openclaw.response", extractTextContent(msg.content, maxLen));
-                break;
-              }
+          // ── Extract token usage, cost, and model from assistant messages ──
+          let totalInput = 0;
+          let totalOutput = 0;
+          let totalCacheRead = 0;
+          let totalCacheWrite = 0;
+          let costUsd = 0;
+          let responseModel: string | undefined;
+
+          for (let i = event.messages.length - 1; i >= 0; i--) {
+            const msg = (event.messages as any[])[i];
+            if (msg?.role !== "assistant") continue;
+
+            // Capture last assistant response content
+            if (captureContent && !responseModel && msg.content) {
+              span.setAttribute("openclaw.response", extractTextContent(msg.content, maxLen));
             }
+
+            // Extract model name from the last assistant message
+            if (!responseModel && msg.model) {
+              responseModel = msg.model;
+            }
+
+            // Extract token usage — handle multiple field naming conventions
+            const u = msg.usage;
+            if (u) {
+              totalInput += u.input ?? u.inputTokens ?? u.input_tokens ?? 0;
+              totalOutput += u.output ?? u.outputTokens ?? u.output_tokens ?? 0;
+              totalCacheRead += u.cacheRead ?? u.cache_read ?? u.cacheReadTokens ?? u.cache_read_tokens ?? 0;
+              totalCacheWrite += u.cacheWrite ?? u.cache_write ?? u.cacheWriteTokens ?? u.cache_write_tokens ?? 0;
+            }
+
+            // Extract cost
+            if (typeof msg.costUsd === "number") costUsd += msg.costUsd;
+            if (typeof msg.cost_usd === "number") costUsd += msg.cost_usd;
           }
+
+          // GenAI semantic convention attributes
+          const totalTokens = totalInput + totalOutput;
+          if (totalInput > 0) span.setAttribute("gen_ai.usage.input_tokens", totalInput);
+          if (totalOutput > 0) span.setAttribute("gen_ai.usage.output_tokens", totalOutput);
+          if (totalTokens > 0) span.setAttribute("gen_ai.usage.total_tokens", totalTokens);
+          if (totalCacheRead > 0) span.setAttribute("gen_ai.usage.cache_read_tokens", totalCacheRead);
+          if (totalCacheWrite > 0) span.setAttribute("gen_ai.usage.cache_write_tokens", totalCacheWrite);
+          if (responseModel) span.setAttribute("gen_ai.response.model", responseModel);
+          if (costUsd > 0) span.setAttribute("openclaw.llm.cost_usd", costUsd);
         }
         span.end();
         runs.delete(sessionKey);

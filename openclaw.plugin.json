@@ -2,7 +2,7 @@
   "id": "logfire-observability",
   "name": "Logfire Observability",
   "description": "Full OpenClaw observability in Pydantic Logfire — agent traces with tool nesting, paired with diagnostics-otel for metrics, logs, and diagnostic events via OpenTelemetry.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "kind": "tool",
   "uiHints": {
     "logfireToken": {

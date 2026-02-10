@@ -1,6 +1,6 @@
 {
   "name": "openclaw-logfire-observability",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "description": "OpenClaw plugin for full observability in Pydantic Logfire — traces agent runs, tool calls, and messages via OpenTelemetry",
   "keywords": [
