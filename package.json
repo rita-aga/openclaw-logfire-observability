@@ -1,0 +1,19 @@
+{
+  "name": "logfire-observability",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-contained OpenClaw observability plugin — traces agent runs, tool calls, and messages to Logfire via OTLP",
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-trace-node": "^1.30.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",
+    "@opentelemetry/resources": "^1.30.0",
+    "@opentelemetry/semantic-conventions": "^1.28.0"
+  }
+}

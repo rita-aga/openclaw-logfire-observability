@@ -1,0 +1,63 @@
+{
+  "id": "logfire-observability",
+  "name": "Logfire Observability",
+  "description": "Self-contained agent observability — traces messages, LLM calls, and tool executions to Logfire via OpenTelemetry. No dependency on diagnostics-otel.",
+  "version": "1.0.0",
+  "kind": "tool",
+  "uiHints": {
+    "logfireToken": {
+      "label": "Logfire Write Token",
+      "help": "Your Logfire project write token (pylf_v1_us_...)"
+    },
+    "serviceName": {
+      "label": "Service Name",
+      "help": "Service name shown in Logfire traces (default: openclaw)"
+    },
+    "captureContent": {
+      "label": "Capture Content",
+      "help": "Include message text, LLM responses, and tool results in traces"
+    },
+    "captureToolParams": {
+      "label": "Capture Tool Params",
+      "help": "Include tool call parameters in traces"
+    },
+    "maxAttributeLength": {
+      "label": "Max Attribute Length",
+      "help": "Truncate string attributes beyond this length (bytes)"
+    }
+  },
+  "configSchema": {
+    "type": "object",
+    "required": ["logfireToken"],
+    "additionalProperties": false,
+    "properties": {
+      "logfireToken": {
+        "type": "string",
+        "description": "Logfire write token (pylf_v1_us_...)"
+      },
+      "logfireEndpoint": {
+        "type": "string",
+        "default": "https://logfire-us.pydantic.dev/v1/traces",
+        "description": "Logfire OTLP endpoint (override for EU or self-hosted)"
+      },
+      "serviceName": {
+        "type": "string",
+        "default": "openclaw",
+        "description": "Service name for traces"
+      },
+      "captureContent": {
+        "type": "boolean",
+        "default": true
+      },
+      "captureToolParams": {
+        "type": "boolean",
+        "default": true
+      },
+      "maxAttributeLength": {
+        "type": "number",
+        "default": 4096,
+        "minimum": 256
+      }
+    }
+  }
+}
