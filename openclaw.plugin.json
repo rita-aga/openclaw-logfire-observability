@@ -1,8 +1,8 @@
 {
   "id": "logfire-observability",
   "name": "Logfire Observability",
-  "description": "Self-contained agent observability — traces messages, LLM calls, and tool executions to Logfire via OpenTelemetry. No dependency on diagnostics-otel.",
-  "version": "1.0.0",
+  "description": "Full OpenClaw observability in Pydantic Logfire — agent traces with tool nesting, paired with diagnostics-otel for metrics, logs, and diagnostic events via OpenTelemetry.",
+  "version": "1.0.1",
   "kind": "tool",
   "uiHints": {
     "logfireToken": {
