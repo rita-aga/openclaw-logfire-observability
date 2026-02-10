@@ -23,15 +23,26 @@ Both are configured to export to Logfire via OTLP. Together they give you full c
 ### 2. Install this plugin
 
 ```bash
-# From the repo root
-cd openclaw-plugins/logfire-observability
-npm install
+openclaw plugins install openclaw-logfire-observability
+```
 
-# Link into your OpenClaw instance
+That's it. OpenClaw downloads the plugin from npm and wires it into your extensions.
+
+<details>
+<summary>Alternative: install from source</summary>
+
+```bash
+git clone https://github.com/rita-aga/openclaw-logfire-observability.git ~/.openclaw/extensions/logfire-observability
+cd ~/.openclaw/extensions/logfire-observability && npm install
+```
+
+Or add it as a git submodule in your project and link it:
+
+```bash
 openclaw plugins install -l /path/to/openclaw-plugins/logfire-observability
 ```
 
-Or copy the folder to `~/.openclaw/extensions/logfire-observability/` and run `npm install` there.
+</details>
 
 ### 3. Configure both plugins
 
@@ -62,6 +73,9 @@ Replace `YOUR_TOKEN_HERE` with your Logfire write token in **both** places:
         "config": {
           "logfireToken": "pylf_v1_us_YOUR_TOKEN_HERE"
         }
+      },
+      "diagnostics-otel": {
+        "enabled": true
       }
     }
   }
