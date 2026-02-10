@@ -68,7 +68,7 @@ Replace `YOUR_TOKEN_HERE` with your Logfire write token in **both** places:
   },
   "plugins": {
     "entries": {
-      "logfire-observability": {
+      "openclaw-logfire-observability": {
         "enabled": true,
         "config": {
           "logfireToken": "pylf_v1_us_YOUR_TOKEN_HERE"

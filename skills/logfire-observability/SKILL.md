@@ -47,7 +47,7 @@ Add to your `openclaw.json`:
   },
   "plugins": {
     "entries": {
-      "logfire-observability": {
+      "openclaw-logfire-observability": {
         "enabled": true,
         "config": {
           "logfireToken": "pylf_v1_us_YOUR_TOKEN_HERE"

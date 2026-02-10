@@ -40,7 +40,7 @@ function extractTextContent(content: unknown, maxLen: number): string {
 }
 
 export default {
-  id: "logfire-observability",
+  id: "openclaw-logfire-observability",
   name: "Logfire Observability",
   version: TRACER_VERSION,
 
