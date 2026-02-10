@@ -1,6 +1,6 @@
 # logfire-observability
 
-Full OpenClaw observability in [Logfire](https://logfire.pydantic.dev). Get agent traces, tool calls, metrics, and logs — all in one dashboard.
+Full OpenClaw observability in [Pydantic Logfire](https://logfire.pydantic.dev). Get agent traces, tool calls, metrics, and logs — all in one dashboard.
 
 This setup combines two plugins:
 
