@@ -118,4 +118,4 @@ User message
        └─ tool.send_message span
 ```
 
-The plugin creates its own `NodeTracerProvider` with a `BatchSpanProcessor` and `OTLPTraceExporter` pointed at Logfire. No global OTel registration — avoids the module isolation bug that breaks `deep-trace` + `diagnostics-otel`.
+The plugin creates its own `NodeTracerProvider` with a `BatchSpanProcessor` and `OTLPTraceExporter` pointed at Logfire. No global OTel registration — avoids the module isolation bug where plugins using `@opentelemetry/api` can't access another plugin's TracerProvider due to jiti's per-plugin module scoping.
