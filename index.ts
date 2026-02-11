@@ -5,7 +5,7 @@ import { resourceFromAttributes } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
 const TRACER_NAME = "openclaw.logfire-observability";
-const TRACER_VERSION = "1.2.0";
+const TRACER_VERSION = "1.1.1";
 
 interface ActiveRun {
   span: Span;
