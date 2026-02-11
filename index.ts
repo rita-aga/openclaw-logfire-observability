@@ -1,11 +1,11 @@
 import { SpanStatusCode, context as otelContext, trace, type Span, type Context, type Tracer } from "@opentelemetry/api";
 import { NodeTracerProvider, BatchSpanProcessor } from "@opentelemetry/sdk-trace-node";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
-import { Resource } from "@opentelemetry/resources";
+import { resourceFromAttributes } from "@opentelemetry/resources";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
 const TRACER_NAME = "openclaw.logfire-observability";
-const TRACER_VERSION = "1.1.0";
+const TRACER_VERSION = "1.2.0";
 
 interface ActiveRun {
   span: Span;
@@ -72,7 +72,7 @@ export default {
     });
 
     const provider = new NodeTracerProvider({
-      resource: new Resource({
+      resource: resourceFromAttributes({
         [ATTR_SERVICE_NAME]: serviceName,
       }),
       spanProcessors: [new BatchSpanProcessor(exporter)],
